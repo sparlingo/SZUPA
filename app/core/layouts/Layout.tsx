@@ -5,7 +5,6 @@ import {
   Flex,
   Avatar,
   HStack,
-  Image,
   IconButton,
   Button,
   Menu,
@@ -21,20 +20,7 @@ import { HamburgerIcon, CloseIcon, AddIcon } from "@chakra-ui/icons"
 
 const Links = ["Where to Play", "Leagues", "Profile"]
 
-const NavLink = ({ children }: { children: ReactNode }) => (
-  <Link
-    px={2}
-    py={1}
-    rounded={"md"}
-    _hover={{
-      textDecoration: "none",
-      bg: useColorModeValue("gray.200", "gray.700"),
-    }}
-    href={"#"}
-  >
-    {children}
-  </Link>
-)
+const NavLink = ({ children }: { children: ReactNode }) => <Link href={"#"}>{children}</Link>
 
 const Layout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
