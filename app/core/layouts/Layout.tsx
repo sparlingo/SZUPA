@@ -1,5 +1,5 @@
-import { Head, BlitzLayout, Routes, Link } from "blitz"
-import { ReactNode } from "react"
+import { Head, BlitzLayout, Routes, Link, useMutation } from "blitz"
+import { ReactNode, Suspense } from "react"
 import {
   Box,
   Flex,
@@ -17,10 +17,54 @@ import {
   Stack,
 } from "@chakra-ui/react"
 import { HamburgerIcon, CloseIcon, AddIcon } from "@chakra-ui/icons"
+import { useCurrentUser } from "app/core/hooks/useCurrentUser"
+import logout from "app/auth/mutations/logout"
+
+const UserInfo = () => {
+  const currentUser = useCurrentUser()
+  const [logoutMutation] = useMutation(logout)
+
+  if (currentUser) {
+    return (
+      <>
+        <div>
+          User id: <code>{currentUser.id}</code>
+          User role: <code>{currentUser.role}</code>
+        </div>
+        <Button
+          variant={"solid"}
+          colorScheme={"teal"}
+          size={"sm"}
+          mr={3}
+          onClick={async () => {
+            await logoutMutation()
+          }}
+        >
+          Log Out
+        </Button>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <Link href={Routes.SignupPage()} passHref>
+          <Button variant={"solid"} colorScheme={"teal"} size={"sm"} mr={4} leftIcon={<AddIcon />}>
+            Sign Up
+          </Button>
+        </Link>
+        <Link href={Routes.LoginPage()} passHref>
+          <Button variant={"solid"} colorScheme={"teal"} size={"sm"} mr={4} leftIcon={<AddIcon />}>
+            Login
+          </Button>
+        </Link>
+      </>
+    )
+  }
+}
 
 const Links = ["Where to Play", "Leagues", "Profile"]
 
-const NavLink = ({ children }: { children: ReactNode }) => <Link href={"#"}>{children}</Link>
+const NavLink = ({ children }: { children: ReactNode }) => <Link href={"home"}>{children}</Link>
 
 const Layout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -51,17 +95,7 @@ const Layout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
-            <Link href={Routes.SignupPage()} passHref>
-              <Button
-                variant={"solid"}
-                colorScheme={"teal"}
-                size={"sm"}
-                mr={4}
-                leftIcon={<AddIcon />}
-              >
-                Sign Up
-              </Button>
-            </Link>
+            {/* <UserInfo /> */}
             <Menu>
               <MenuButton as={Button} rounded={"full"} variant={"link"} cursor={"pointer"} minW={0}>
                 <Avatar
