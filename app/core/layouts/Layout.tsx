@@ -30,10 +30,10 @@ const UserInfo = () => {
       <>
         <Nav direction="row" background="brand">
           <Link href={Routes.SignupPage()}>
-            <Anchor icon={<Add />} hoverIndicator />
+            <Anchor icon={<Add />} />
           </Link>
           <Link href={Routes.LoginPage()}>
-            <Anchor icon={<Login />} hoverIndicator />
+            <Anchor icon={<Login />} />
           </Link>
         </Nav>
       </>
