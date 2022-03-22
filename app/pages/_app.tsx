@@ -7,8 +7,6 @@ import {
   ErrorFallbackProps,
   useQueryErrorResetBoundary,
 } from "blitz"
-import { ChakraProvider } from "@chakra-ui/provider"
-// import { ColorModeScript } from "@chakra-ui/color-mode"
 import LoginForm from "app/auth/components/LoginForm"
 
 import theme from "../theme"
@@ -17,14 +15,12 @@ export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
 
   return (
-    <ChakraProvider theme={theme}>
-      <ErrorBoundary
-        FallbackComponent={RootErrorFallback}
-        onReset={useQueryErrorResetBoundary().reset}
-      >
-        {getLayout(<Component {...pageProps} />)}
-      </ErrorBoundary>
-    </ChakraProvider>
+    <ErrorBoundary
+      FallbackComponent={RootErrorFallback}
+      onReset={useQueryErrorResetBoundary().reset}
+    >
+      {getLayout(<Component {...pageProps} />)}
+    </ErrorBoundary>
   )
 }
 

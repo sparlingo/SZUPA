@@ -1,23 +1,8 @@
 import { Head, BlitzLayout, Routes, Link, useMutation } from "blitz"
-import { ReactNode, Suspense } from "react"
-import {
-  Box,
-  Flex,
-  Avatar,
-  HStack,
-  IconButton,
-  Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  useDisclosure,
-  useColorModeValue,
-  Stack,
-} from "@chakra-ui/react"
-import { HamburgerIcon, CloseIcon, AddIcon } from "@chakra-ui/icons"
-import { useCurrentUser } from "app/core/hooks/useCurrentUser"
+import { Suspense } from "react"
+import { Anchor, Header, Footer, Main, Button, Text, Nav } from "grommet"
+import { Add, Login, Home } from "grommet-icons"
+import { useCurrentUser } from "../hooks/useCurrentUser"
 import logout from "app/auth/mutations/logout"
 
 const UserInfo = () => {
@@ -32,42 +17,32 @@ const UserInfo = () => {
           User role: <code>{currentUser.role}</code>
         </div>
         <Button
-          variant={"solid"}
-          colorScheme={"teal"}
-          size={"sm"}
-          mr={3}
+          primary
+          label="Log Out"
           onClick={async () => {
             await logoutMutation()
           }}
-        >
-          Log Out
-        </Button>
+        />
       </>
     )
   } else {
     return (
       <>
-        <Link href={Routes.SignupPage()} passHref>
-          <Button variant={"solid"} colorScheme={"teal"} size={"sm"} mr={4} leftIcon={<AddIcon />}>
-            Sign Up
-          </Button>
-        </Link>
-        <Link href={Routes.LoginPage()} passHref>
-          <Button variant={"solid"} colorScheme={"teal"} size={"sm"} mr={4} leftIcon={<AddIcon />}>
-            Login
-          </Button>
-        </Link>
+        <Nav direction="row" background="brand">
+          <Link href={Routes.SignupPage()}>
+            <Anchor icon={<Add />} hoverIndicator />
+          </Link>
+          <Link href={Routes.LoginPage()}>
+            <Anchor icon={<Login />} hoverIndicator />
+          </Link>
+        </Nav>
       </>
     )
   }
 }
 
-const Links = ["Where to Play", "Leagues", "Profile"]
-
-const NavLink = ({ children }: { children: ReactNode }) => <Link href={"home"}>{children}</Link>
-
 const Layout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  //const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <>
@@ -75,57 +50,19 @@ const Layout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
         <title>{title || "SZUPA"}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
-        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <IconButton
-            size={"md"}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={"Open Menu"}
-            display={{ md: "none" }}
-            onClick={isOpen ? onClose : onOpen}
-          />
-          <HStack spacing={8} alignItems={"center"}>
-            <Link href={Routes.Home()}>
-              <a>SZUPA</a>
-            </Link>
-            <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
-            </HStack>
-          </HStack>
-          <Flex alignItems={"center"}>
-            {/* <UserInfo /> */}
-            <Menu>
-              <MenuButton as={Button} rounded={"full"} variant={"link"} cursor={"pointer"} minW={0}>
-                <Avatar
-                  size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
-                />
-              </MenuButton>
-              <MenuList>
-                <MenuItem>Link 1</MenuItem>
-                <MenuItem>Link 2</MenuItem>
-                <MenuDivider />
-                <MenuItem>Link 3</MenuItem>
-              </MenuList>
-            </Menu>
-          </Flex>
-        </Flex>
-
-        {isOpen ? (
-          <Box pb={4} display={{ md: "none" }}>
-            <Stack as={"nav"} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
-            </Stack>
-          </Box>
-        ) : null}
-      </Box>
-      {children}
+      <Header background="brand">
+        <Link href={Routes.Home()}>
+          <Button icon={<Home />} hoverIndicator />
+        </Link>
+        <Suspense fallback="Loading...">
+          <UserInfo />
+        </Suspense>
+      </Header>
+      <Main>{children}</Main>
+      <Footer background="brand" pad="medium">
+        <Text>CopyRight</Text>
+        <Anchor label="about" />
+      </Footer>
     </>
   )
 }

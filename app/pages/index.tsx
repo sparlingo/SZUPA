@@ -1,17 +1,12 @@
-import { useEffect } from "react"
 import { BlitzPage } from "blitz"
 import Layout from "app/core/layouts/Layout"
-import { Container, Heading } from "@chakra-ui/react"
+import { Heading, Box } from "grommet"
 
 const Home: BlitzPage = () => {
   return (
-    <Container>
-      <main>
-        <Heading as="h1" size="2xl">
-          SZUPA
-        </Heading>
-      </main>
-    </Container>
+    <Box>
+      <Heading>SZUPA</Heading>
+    </Box>
   )
 }
 
