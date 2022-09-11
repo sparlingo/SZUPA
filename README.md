@@ -1,4 +1,4 @@
-# movie-app-nuxt-buefy
+# SZUPA
 
 ## Build Setup
 

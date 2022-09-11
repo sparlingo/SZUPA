@@ -33,8 +33,15 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/buefy
     'nuxt-buefy',
+    '@nuxtjs/strapi'
   ],
-
+  strapi: {
+    url: process.env.STRAPI_URL || 'http://localhost:1337',
+    prefix: '/api',
+    version: 'v4',
+    cookie: {},
+    cookename: 'strapi_jwt',
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     extend(config) {
